@@ -1,5 +1,6 @@
 import User from '../models/userModel.js';
 
+// Get Status Api
 
 export const getstatus = async (req, res) => {
     try {
@@ -12,6 +13,8 @@ export const getstatus = async (req, res) => {
         res.status(500).json({message: 'Error Fetch Statistics', error: error.message})
     }
 }
+
+// Search Users Api
 
 export const searchUsers = async(req, res) => {
     try {
@@ -43,3 +46,99 @@ export const searchUsers = async(req, res) => {
         res.status(500).json({message: 'Error fetching statistics', error: error.message});
     }
 }
+
+// Get All Users API
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const query = req.params.query;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const users = await User.find().sort({createdAt: -1}).skip(skip).limit(limit)
+        const total = await User.countDocuments();
+
+        res.json({
+            users,
+            currentPage: page,
+            totalPages: Math.ceil(total/limit),
+            totalUsers: total
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users', error: error.message });
+    }
+}
+
+// Get Single User Api
+
+export const getUserById = async (req, res) =>{
+    try {
+        const user = await User.findById(req.params.id);
+        if(!user) return res.status(404).json({message: 'user not found'});
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching user', error: error.message });
+    }
+};
+
+// Create User Api
+
+export const createUser = async (req, res) => {
+    try {
+        const { name, email, phone, status } = req.body;
+        if (!name || !email || !phone)
+            return res.status(400).json({
+        message: 'Name, email and phone are required', 
+    });
+
+    const existingUser = await User.findOne({email});
+    
+    if(existingUser) return res.status(400).json({ message: 'email already exist' });
+
+    const user = new User({
+        name,
+        email,
+        phone,
+        status: status || 'Active'
+    })
+    await user.save();
+    res.status(201).json(user);
+
+    } catch (error) {
+        res.status(500).json({message: 'Error create a user', error: error.message});
+    }
+}
+
+// Update User Api
+
+export const updateUser = async (req, res) => {
+    try {
+        const { name, email, phone, status} = req.body;
+        if(email){
+            const exists = await User.find({ email, _id: { $ne: req.params.id }});
+            if (exists.length > 0) {
+                return res.status(400).json({ message: 'Email already exists'});
+            }
+        }    
+        const user = await User.findByIdAndUpdate(req.params.id, {name, email, phone, status}, {new: true, runValidators: true});
+        if(!user) return res.status(404).json({ message: 'User not found'});
+        res.json(user);
+    }
+    catch (error) {
+        res.status(500).json({message: 'Error updating user', error: error.message});
+    }
+}
+
+// Delete User Api
+
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) return res.status(404).json({ message: 'user not found'});
+        res.json({ message: 'user deleted successfully', success: true});
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error deleting user', error: error.message});
+    }
+}; 
