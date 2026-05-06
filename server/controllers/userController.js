@@ -81,3 +81,31 @@ export const getUserById = async (req, res) =>{
         res.status(500).json({ message: 'Error Fetching Statistics', error: error.message });
     }
 };
+
+// Create User Api
+
+export const createUser = async (req, res) => {
+    try {
+        const { name, email, phone, status } = req.body;
+        if (!name || !email || !phone)
+            return res.status(400).json({
+        message: 'Name, email and phone are required', 
+    });
+
+    const existingUser = await User.findOne({email});
+    
+    if(existingUser) return res.status(400).json({ message: 'email already exist' });
+
+    const user = new User({
+        name,
+        email,
+        phone,
+        status: status || 'Active'
+    })
+    await user.save();
+    res.status(201).json(user);
+
+    } catch (error) {
+        res.status(500).json({message: 'Error fetching statistics', error: error.message});
+    }
+}
