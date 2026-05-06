@@ -109,3 +109,23 @@ export const createUser = async (req, res) => {
         res.status(500).json({message: 'Error fetching statistics', error: error.message});
     }
 }
+
+// Update User Api
+
+export const updateUser = async (req, res) => {
+    try {
+        const { name, email, phone, status} = req.body;
+        if(email){
+            const exists = await User.find({ email, _id: { $ne: req.params.id }});
+            if (exists.length > 0) {
+                return res.status(400).json({ message: 'Email already exists'});
+            }
+        }    
+        const user = await User.findByIdAndUpdate(req.params.id, {name, email, phone, status}, {new: true, runValidators: true});
+        if(!user) return res.status(404).json({ message: 'User not found'});
+        res.json(user);
+    }
+    catch (error) {
+        res.status(500).json({message: 'Error fetching statistics', error: error.message});
+    }
+}
