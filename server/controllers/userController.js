@@ -66,7 +66,7 @@ export const getAllUsers = async (req, res) => {
             totalUsers: total
         });
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching statistics', error: error.message });
+        res.status(500).json({ message: 'Error fetching users', error: error.message });
     }
 }
 
@@ -78,7 +78,7 @@ export const getUserById = async (req, res) =>{
         if(!user) return res.status(404).json({message: 'user not found'});
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: 'Error Fetching Statistics', error: error.message });
+        res.status(500).json({ message: 'Error fetching user', error: error.message });
     }
 };
 
@@ -106,7 +106,7 @@ export const createUser = async (req, res) => {
     res.status(201).json(user);
 
     } catch (error) {
-        res.status(500).json({message: 'Error fetching statistics', error: error.message});
+        res.status(500).json({message: 'Error create a user', error: error.message});
     }
 }
 
@@ -126,6 +126,19 @@ export const updateUser = async (req, res) => {
         res.json(user);
     }
     catch (error) {
-        res.status(500).json({message: 'Error fetching statistics', error: error.message});
+        res.status(500).json({message: 'Error updating user', error: error.message});
     }
 }
+
+// Delete User Api
+
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) return res.status(404).json({ message: 'user not found'});
+        res.json({ message: 'user deleted successfully', success: true});
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error deleting user', error: error.message});
+    }
+}; 
