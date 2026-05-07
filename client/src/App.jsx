@@ -1,5 +1,7 @@
 import React from 'react';
 import { Users, Plus } from 'lucide-react';
+import StatusCard from './components/StatusCard';
+import SearchBar from './components/SearchBar';
 
 const App = () => {
   return (
@@ -21,7 +23,16 @@ const App = () => {
           </button>
         </div>
       </header>
-      
+      {/* Main */}
+      <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+        <div className='grid grid-col-1 md:grid-col-3 gap-6 mb-8'>
+          {/* Status */}
+          <StatusCard/>
+        </div>
+        
+        {/* Search */}
+        <SearchBar/>
+      </main>
     </div>
   )
 }
