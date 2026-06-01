@@ -36,7 +36,7 @@ const App = () => {
         {/* User Table */}
         <UserTable/>
         {/* User Model */}
-        <UserModel/>
+        {/* <UserModel/> */}
       </main>
     </div>
   )
