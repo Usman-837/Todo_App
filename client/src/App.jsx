@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Users, User, Plus, Phone } from 'lucide-react';
+import { Users, User, Plus, Phone, Check, X } from 'lucide-react';
 import StatusCard from './components/StatusCard';
 import SearchBar from './components/SearchBar';
 import UserTable from './components/UserTable';
@@ -120,9 +120,11 @@ const App = () => {
       </header>
       {/* Main */}
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
-        <div className='grid grid-col-1 md:grid-col-3 gap-6 mb-8'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
           {/* Status */}
           <StatusCard title='Total Users' value={{ number: status.total }} icon={<Users/>} bgIcon='bg-indigo-500' iconColor='text-white' gradient='from-indgo-900 to-indgo-700' />
+          <StatusCard title='Active Users' value={{ number: status.active }} icon={<Check/>} bgIcon='bg-green-500' iconColor='text-white' gradient='from-green-900 to-green-700' />
+          <StatusCard title='Inactive Users' value={{ number: status.inactive }} icon={<X/>} bgIcon='bg-red-500' iconColor='text-white' gradient='from-red-900 to-red-700' />
         </div>
         {/* Search */}
         <SearchBar/>
