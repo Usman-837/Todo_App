@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-const API_URL = 'http:localhost:5000/api/v1/users/';
+const API_URL = 'http://localhost:5000/api/v1/users/';
 
 // get users with paginations
 export const getUsers = async (page = 1, limit = 5) => {
