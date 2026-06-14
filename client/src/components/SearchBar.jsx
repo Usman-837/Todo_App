@@ -5,13 +5,13 @@ const SearchBar = ({
   value,
   onChange,
   onClear,
-  ItemsPerPage,
+  itemsPerPage,
   onItemsPerPageChange,
   currentPage,
   totalUsers,
 }) => {
-  const startUser = totalUsers === 0 ? 0 : (currentPage - 1) * ItemsPerPage + 1;
-  const endUser = Math.min(currentPage * ItemsPerPage, totalUsers);
+  const startUser = totalUsers === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
+  const endUser = Math.min(currentPage * itemsPerPage, totalUsers);
 
   return (
     <div className="bg-gray-900 rounded-lg shadow-lg p-4 border border-gray-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -19,7 +19,7 @@ const SearchBar = ({
       <div className="relative flex-1">
         <Search
           size={18}
-          className="absolute left-3 top-1/2 transform-y-1/2 text-gray-400 pointer-events-none "
+          className="absolute left-3 top-1/3 transform-y-1/2 text-gray-400 pointer-events-none "
         />
         <input
           type="text"
@@ -30,7 +30,10 @@ const SearchBar = ({
         />
         {/* Conditional Rendering */}
         {value && (
-          <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white hover:bg-gray-700 p-1 rounded-full">
+          <button
+            onClick={onClear}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white hover:bg-gray-700 p-1 rounded-full"
+          >
             <X size={16} />
           </button>
         )}

@@ -57,3 +57,4 @@ const UserModel = ({ isOpen, onClose, formData, setFormData, onSubmit, loading, 
 }
 
 export default UserModel
+
