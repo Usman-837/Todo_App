@@ -34,16 +34,12 @@ const App = () => {
 
   const stats = ["Active", "Inactive"];
 
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, [currentPage, itemsPerpage]);
-
-  // useEffect(() => {
-  //   if (searchTerm) handleSearch();
-  //   else fetchUsers();
-  // }, [searchTerm]);
   useEffect(() => {
-    fetchUsers();
+    if (searchTerm.trim()) {
+      handleSearch();
+    } else {
+      fetchUsers();
+    }
   }, [currentPage, itemsPerpage, searchTerm]);
 
   const handleSubmit = async () => {
@@ -92,26 +88,7 @@ const App = () => {
     setStatus(data);
   };
 
-  // const fetchUsers = async () => {
-  //   const data = await getUsers(currentPage, itemsPerpage);
-  //   setUsers(data.users);
-  //   setTotalPages(data.totalPages);
-  //   setTotalUsers(data.setTotalUsers);
-  //   fetchStatus();
-  // };
-
-  // fetch users
-  //   const fetchUsers = async () => {
-  //   const data = await getUsers(currentPage, itemsPerpage);
-
-  //   console.log("API RESPONSE:", data);
-
-  //   setUsers(data.users || []);
-  //   setTotalPages(data.totalPages || 0);
-  //   setTotalUsers(data.totalUsers || 0);
-
-  //   fetchStatus();
-  // };
+  // Fetch users with pagination
 
   const fetchUsers = async () => {
     const data = await getUsers(currentPage, itemsPerpage);
